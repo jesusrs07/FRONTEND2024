@@ -1,114 +1,12 @@
 import './App.css'
 import {useState} from 'react'
+import { buttons } from './assets/buttons'
+import { ButtonsRow } from './components/ButtonsRow'
 const numberButtonClasses = 'btn btn-secondary w-100'
 const operatorButtonClasses = 'btn btn-warning w-100'
-const equalBButtonClases = 'btn btn-danger w-100'
-const buttons=[[
-  {
-    class: 'special',
-    label: 'C',
-    function: 'clearDisplay'
-  },
-  {
-    class: 'special',
-    label: '<',
-    function: 'deleteLastCharacter'
-  },
-  {
-    class: 'special',
-    label: '%',
-    function: 'setOperator'
-  },
-  {
-    class: 'special',
-    label: '/',
-    function: 'setOperator'
-  }
-],
-[
-  {
-    class: 'special',
-    label: '7',
-    function: 'updateDisplay'
-  },
-  {
-    class: 'special',
-    label: '8',
-    function: 'updateDisplay'
-  },
-  {
-    class: 'special',
-    label: '9',
-    function: 'updateDisplay'
-  },
-  {
-    class: 'special',
-    label: 'X',
-    function: 'setOperator'
-  }
-],
-[
-  {
-    class: 'special',
-    label: '4',
-    function: 'updateDisplay'
-  },
-  {
-    class: 'special',
-    label: '5',
-    function: 'updateDisplay'
-  },
-  {
-    class: 'special',
-    label: '6',
-    function: 'updateDisplay'
-  },
-  {
-    class: 'special',
-    label: '-',
-    function: 'setOperator'
-  }
-],
-[
-  {
-    class: 'special',
-    label: '1',
-    function: 'updateDisplay'
-  },
-  {
-    class: 'special',
-    label: '2',
-    function: 'updateDisplay'
-  },
-  {
-    class: 'special',
-    label: '3',
-    function: 'updateDisplay'
-  },
-  {
-    class: 'special',
-    label: '+',
-    function: 'setOperator'
-  }
-],
-[
-  {
-    class: 'special',
-    label: '0',
-    function: 'updateDisplay'
-  },
-  {
-    class: 'special',
-    label: '.',
-    function: 'updateDisplay'
-  },
-  {
-    class: 'special',
-    label: '=',
-    function: 'calculate'
-  },
-]
-]
+const equalButtonClases = 'btn btn-danger w-100'
+
+
 
 function App() {
   const [display, setDisplay] = useState({
@@ -184,30 +82,23 @@ function App() {
   }
 
   const calculate = () => {
-    /*let result = 0
-
+   
     if(!display.operatorHasBeenPressed) {
       return
     }
-
-    if(display.operator === '%') {
-      result = eval(`${display.previousValue} / 100 * ${display.value}`)
-    }else{
-      result = eval(`${display.previousValue} ${display.operator} ${display.value}`)
-
-    }
-    */
     
-    let result = (display.operator === '%') ?
-    eval(`${display.previousValue} / 100 * ${display.value}`) :
-    eval(`${display.previousValue} ${display.operator} ${display.value}`)
+    let operator = display.operator ==='%'?'/ 100 *':
+    display.operator ==='X'? '*': display.operator
+
+    let result = eval(`${display.previousValue} ${operator} ${display.value}`) 
+
 
     result = result + ""
 
 
     setDisplay({
       ...display,
-      value: eval(`${display.previousValue} ${display.operator} ${display.value}`),
+      value: result,
       operatorHasBeenPressed: false,
       hasPoint: result.includes("."),
       previousValue: '0'
@@ -236,88 +127,16 @@ function App() {
             <h2>{display.value}</h2>
           </td>
         </tr>
-
-        <tr>
-          <td>
-          <button className={equalBButtonClases} type='button' onClick={() => clearDisplay('0')}>C</button>
-          </td>
-          <td>
-          <button className={equalBButtonClases} type='button' onClick={() => deleteLastCharacter()}>{'<'}</button>
-          </td>
-          <td>
-          <button className={operatorButtonClasses} type='button' onClick={() => setOperator('%')}>%</button>
-          </td>
-          <td>
-          <button className={operatorButtonClasses} type='button' onClick={() => setOperator ('/')}>/</button>
-          </td>
-        </tr>
-
-        <tr>
-        <td>
-            <button className={numberButtonClasses} type='button' onClick={() => updateDisplay('7')}>7</button>
-          </td>
-
-          <td>
-            <button className={numberButtonClasses} type='button' onClick={() => updateDisplay('8')}>8</button>
-          </td>
-
-          <td>
-            <button className={numberButtonClasses} type='button' onClick={() => updateDisplay('9')}>9</button>
-          </td>
-          
-          <td>
-          <button className={operatorButtonClasses} type='button' onClick={() => setOperator ('*')}>x</button>
-          </td>
-        </tr>
-
-        <tr>
-        <td>
-            <button className={numberButtonClasses} type='button' onClick={() => updateDisplay('4')}>4</button>
-          </td>
-
-          <td>
-            <button className={numberButtonClasses} type='button' onClick={() => updateDisplay('5')}>5</button>
-          </td>
-
-          <td>
-            <button className={numberButtonClasses} type='button' onClick={() => updateDisplay('6')}>6</button>
-          </td>
-          <td>
-          <button className={operatorButtonClasses} type='button' onClick={() => setOperator ('-')}>-</button>
-          </td>
-        </tr>
-
-        <tr>
-        <td>
-            <button className={numberButtonClasses} type='button' onClick={() => updateDisplay('1')}>1</button>
-          </td>
-
-          <td>
-            <button className={numberButtonClasses} type='button' onClick={() => updateDisplay('2')}>2</button>
-          </td>
-
-          <td>
-            <button className={numberButtonClasses} type='button' onClick={() => updateDisplay('3')}>3</button>
-          </td>
-
-         <td>
-            <button className={operatorButtonClasses} type='button' onClick={() => setOperator ('+')}>+</button>
-          </td>
-
-        </tr>
-
-        <tr>
-          <td className='text-center' colSpan={2}>
-            <button className={numberButtonClasses} type='button' onClick={() => updateDisplay('0')}>0</button>
-          </td>
-
-          <td>
-            <button className={numberButtonClasses} type='button' onClick={() => updateDisplay('.')}>.</button>
-          </td>
-          <td>
-          <button className={equalBButtonClases} type='button' onClick={calculate}>=</button>
-          </td>
-        </tr>
+        {
+          buttons.map((row, index) => {
+            return (
+              <ButtonsRow 
+              key={index} 
+              row ={row}
+              buttonsFunctions={buttonsFunctions} />
+            )
+          })
+        }
 
       </tbody>
     </table>
