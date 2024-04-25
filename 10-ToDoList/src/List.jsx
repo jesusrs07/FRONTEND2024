@@ -1,6 +1,6 @@
 import Listitem from "./Listitem"
 
-const List=({tasklist})=>{
+const List=({taskList})=>{
 
 
 return (
@@ -19,7 +19,7 @@ return (
       </div>
     </div>
     {
-        tasklist.map((task)=>(
+        taskList.map((task)=>(
            
                 <Listitem
                 key={task.id}
