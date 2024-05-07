@@ -1,6 +1,9 @@
-import withReactContent from "sweetalert2-react-content"
+import React from "react"
 import { useForm } from "./Hooks/UseForm"
+import withReactContent from "sweetalert2-react-content"
 import Swal from "sweetalert2"
+import {v4 as uuidv4} from 'uuid'
+
 
 const taskInfo = {
     task: '',
@@ -9,17 +12,32 @@ const taskInfo = {
     limit: '',
 }
 
-const AddTaskModal = ({taskList, setTaskList}) => {
-    const [values, handleInputChange, reset] = useForm (taskInfo)
+const AddTaskModal = ({task = null, taskList, setTaskList}) => {
+    const [values, handleInputChange, reset] = useForm (task || taskInfo)
 
     const MySwal = withReactContent(Swal)
 
     const handleSaveClic = () => {
-        const newTaskList = [...taskList,{
-            id: taskList.length +1,
+        let newTaskList = []
+        if (task) {
+            newTaskList = taskList.map((taskItem) => {
+                if (taskItem.id === task.id){
+                    task.task = values.task
+                    task.description = values.description
+                    task.location = values.location
+                    task.limit = values.limit
+                }
+                return taskItem
+            })
+
+        } else {
+
+         newTaskList = [...taskList,{
+            id: uuidv4(),
             ...values,
             done: false
         }] 
+        }
 
         setTaskList(newTaskList)
 
@@ -29,18 +47,21 @@ const AddTaskModal = ({taskList, setTaskList}) => {
 
         MySwal.fire({
             icon: 'success',
-            title: 'Task added',
+            title: task ? 'Task updated' : 'Task added',
         })
 
     }
 
+    const id = task?.id || ''
+
+
 
     return (
-        <div className="modal fade" id={"addTaskModal"}>
+        <div className="modal fade" id={"addTaskModal"+id}>
             <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
             <div className="modal-header">
-            <h5 className="modal-title" id="addTaskModal">Add New Task </h5>
+            <h5 className="modal-title" id="addTaskModalTitle">{task ? "Edit Task" : "Add New Task"}</h5>
             <button type="button"
             className="btn-close"
             data-bs-dismiss="modal">
@@ -103,6 +124,10 @@ const AddTaskModal = ({taskList, setTaskList}) => {
             </div>
         </div>
     )
+    
 }
+
+
+
 
 export default AddTaskModal

@@ -1,38 +1,39 @@
 import Listitem from "./Listitem"
 
-const List=({taskList})=>{
 
+const List = ({taskList, setTaskList}) => {
 
-return (
-    
-    <>
-    
-    <div className="row">
-      <div className="col-6">
-        <h4> Tasks</h4>
+return(
+    <div>
+    <div className="row m-2">
+        <div className="col-6">
+          <h4>Task</h4>
+        </div>
+        <div className="col-3">
+          <h4>Limit</h4>
+        </div>
+        <div className="col">
+          <h4>Location</h4>
+        </div>
+
       </div>
-      <div className="col-3">
-        <h4>Limit </h4>
-      </div>
-      <div className="col">
-        <h4>Location</h4>
-      </div>
+        {
+            taskList.map((task) =>{
+                return(
+                    <Listitem
+                    key={task.id}
+                    task={task}
+                    taskList={taskList}
+                    setTaskList={setTaskList}
+                    />
+                )
+            })
+        }
     </div>
-    {
-        taskList.map((task)=>(
-           
-                <Listitem
-                key={task.id}
-                task={task}
-                />
-            
-        )
     )
-    }
-    
-   
-   </>
-
-  )
 }
+
+
+
+
 export default List
