@@ -8,7 +8,7 @@ import { useState } from 'react'
 const App = () => {
   const [cities, setCities] = useState(["Tuxtepec"])
   return (
-    < div className='container'>
+    <div className='container'>
       <h1>Weather Api</h1>
       <hr />
       <SearchCity cities={cities} setCities={setCities} />
